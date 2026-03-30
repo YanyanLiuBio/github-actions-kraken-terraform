@@ -46,7 +46,7 @@ variable "ecr_region" {
 variable "ecr_account_id" {
   description = "AWS account ID that owns the ECR registry"
   type        = string
-  default     = "123456789012" # replace with your account ID
+  default     = "512431263418" # replace with your account ID
 }
 
 ###############################################################################
