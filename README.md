@@ -1,1 +1,1 @@
-# seqwell-terraform-state-storage
+# github-actions-kraken-terraform
