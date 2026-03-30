@@ -80,7 +80,7 @@ data "aws_ami" "al2023" {
 ###############################################################################
 resource "aws_security_group" "nf_sg" {
   name        = "nextflow-kraken-sg"
-  description = "Nextflow Kraken head-node – SSH in, all out"
+  description = "Nextflow Kraken head-node: SSH in, all out"
 
   ingress {
     description = "SSH"
@@ -242,7 +242,7 @@ resource "aws_instance" "nextflow" {
   iam_instance_profile   = aws_iam_instance_profile.nf_profile.name
   vpc_security_group_ids = [aws_security_group.nf_sg.id]
 
-  # key_name = "your-key-pair"   # uncomment to enable SSH key access
+  # key_name = "20220621_yanyan"   # uncomment to enable SSH key access
 
   root_block_device {
     volume_type           = "gp3"
