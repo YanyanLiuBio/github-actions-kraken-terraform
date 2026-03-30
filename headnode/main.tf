@@ -22,7 +22,7 @@ terraform {
       version = "~> 5.0"
     }
   }
-  
+
   backend "s3" {
     bucket = "seqwell-terraform-state-storage"
     key    = "projects/kraken_ec2/headnode/terraform.tfstate"
@@ -46,7 +46,7 @@ variable "ecr_region" {
 variable "ecr_account_id" {
   description = "AWS account ID that owns the ECR registry"
   type        = string
-  default     = "123456789012"   # replace with your account ID
+  default     = "123456789012" # replace with your account ID
 }
 
 ###############################################################################
@@ -87,7 +87,7 @@ resource "aws_security_group" "nf_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]   # restrict to your IP in production
+    cidr_blocks = ["0.0.0.0/0"] # restrict to your IP in production
   }
 
   egress {
@@ -176,9 +176,9 @@ resource "aws_iam_role_policy" "s3_any_bucket" {
         Resource = "arn:aws:s3:::*"
       },
       {
-        Sid    = "ObjectAccess"
-        Effect = "Allow"
-        Action = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
+        Sid      = "ObjectAccess"
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
         Resource = "arn:aws:s3:::*/*"
       }
     ]

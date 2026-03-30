@@ -35,7 +35,7 @@ resource "aws_iam_role" "github_actions" {
       Action    = "sts:AssumeRoleWithWebIdentity"
       Condition = {
         StringEquals = { "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com" }
-        StringLike   = { "token.actions.githubusercontent.com:sub" = "repo:YanyanLiuBio/YOUR_KRAKEN_REPO:*" }
+        StringLike   = { "token.actions.githubusercontent.com:sub" = "repo:YanyanLiuBio/github-actions-kraken-terraform:*" }
       }
     }]
   })
