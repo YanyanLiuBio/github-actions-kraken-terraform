@@ -1,0 +1,64 @@
+name: Shared Data – Terraform
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "shared_data/**"
+  pull_request:
+    paths:
+      - "shared_data/**"
+  workflow_dispatch:
+    inputs:
+      instance_id:
+        description: "EC2 instance ID (e.g. i-0abc123def456)"
+        required: true
+      instance_az:
+        description: "Availability zone (e.g. us-east-2a)"
+        required: true
+
+env:
+  AWS_REGION: us-east-2
+  TF_WORKING_DIR: shared_data
+
+jobs:
+  terraform:
+    name: Terraform Plan & Apply
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+            -var="instance_id=${{ github.event.inputs.instance_id }}" \
+            -var="instance_az=${{ github.event.inputs.instance_az }}" \
+            -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+        run: terraform apply -auto-approve tfplan
